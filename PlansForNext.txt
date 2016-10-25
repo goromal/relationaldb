@@ -1,0 +1,3 @@
+When cycling through schemes, compile a map<pred_name, predicate_obj> for all predicate definitions
+
+When cycling through facts, pair instance predicates with definition predicates using the definition map and ".. = .. + ..." operations to fill up a relations map. If a predicate is missing from the definition map, throw an error. 

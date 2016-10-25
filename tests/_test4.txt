@@ -1,0 +1,22 @@
+#| TEST4 - should return an error for the extra
+q_mark on line 21.
+|#
+Schemes:
+	snap(S,N,A,P)
+
+#comment
+
+	HasSameAddress(X,Y)
+
+Facts: #comment
+	snap('12345','C. Brown','12 Apple','555-1234').
+	snap('33333','Snoopy','12 Apple','555-1234').
+        snap('45454','Isaac','44 Peach Tree','364-9552').
+
+Rules:
+	HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,E).
+
+#comment
+
+Queries:
+	HasSameAddress('Snoopy',Who)??
