@@ -1,13 +1,12 @@
 #ifndef _REL_
 #define _REL_
-#include "datalogProgram.h"
+#include "dp_Objects.h"
 #include "center_text.h"
 // uncomment to disable assert()
 // #define NDEBUG
 #include <cassert>
 #include <unordered_set>
 #include <functional>
-#include <utility>
 #include <iterator>
 #include <iomanip>
 
@@ -79,7 +78,7 @@ OutIt unordered_set_intersection(InIt1 b1, InIt1 e1, InIt2 b2, InIt2 e2, OutIt o
 }
 
 template <typename InIt1, typename InIt2, typename OutIt>
-OutIt unordered_set_difference(InIt1 b1, InIt1 e1, InIt2 b2, InIt2 e2, OutIt out) {//??????????????????????????VERIFY
+OutIt unordered_set_difference(InIt1 b1, InIt1 e1, InIt2 b2, InIt2 e2, OutIt out) {
   while (!(b1 == e1)) {
     if (std::find(b2, e2, *b1) == e2) {
       *out = *b1;

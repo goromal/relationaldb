@@ -17,6 +17,7 @@ using std::cout; using std::endl;
 using std::stringstream;
 using std::sort;
 using std::shared_ptr;
+using std::map;
 
 enum TokenType {COMMA,PERIOD,Q_MARK,LEFT_PAREN,RIGHT_PAREN,COLON,COLON_DASH,MULTIPLY,ADD,SCHEMES,FACTS,RULES,
 QUERIES,ID,STRING,COMMENT,WHITESPACE,UNDEFINED,MY_EOF,NEWLINE};

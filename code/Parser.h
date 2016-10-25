@@ -26,11 +26,11 @@ private:
   bool _datalogProgram3();
   bool _datalogProgram4();
   bool _scheme();                                     //  *
-  bool _scheme2(string scheme_name);                  //  *
+  bool _scheme2(predicate scheme_obj);                //  *
   bool _schemeList();                                 //  *
   bool _idList();                                     //  *
   bool _fact();                                       //  *
-  bool _fact2();                                      //  *
+  bool _fact2(predicate fact_obj);                    //  *
   bool _factList();                                   //  *
   bool _rule();                                       //  *
   bool _rule2();                                      //  *

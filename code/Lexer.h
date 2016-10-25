@@ -1,7 +1,6 @@
 #ifndef _LEXER
 #define _LEXER
 #include "FiniteStateAutomoton.h"
-//#include <stack>-------------------------------------------------------------
 #include <climits>
 
 struct ReadInfo {
