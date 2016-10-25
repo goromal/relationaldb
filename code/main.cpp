@@ -1,5 +1,6 @@
 #include "Lexer.h"
 #include "Parser.h"
+#include "Relation.h"
 
 int main(int argc, char* argv[]) {
 	Lexer LexicalAnalyzer;
