@@ -2,8 +2,4 @@ When cycling through schemes, compile a map<pred_name, predicate_obj> for all pr
 
 When cycling through facts, pair instance predicates with definition predicates using the definition map and ".. = .. + ..." operations to fill up a relations map. If a predicate is missing from the definition map, throw an error. 
 
---------------------------------------------------------
-
 IN THE PARSER, make it so that adding a "scheme" to the datalog program object calls a function (datalogprogram method), not a simple push_back(). Within that function will be the push_back and the insertion of a new "foundational" relation into the map as stated above. Subsequent functions for adding "fact"s will assume that there's already something with the same name in the map and so that part will be relatively simple to implement.
-
-insert const stuff like in relation.h wherever appropriate and useful.
