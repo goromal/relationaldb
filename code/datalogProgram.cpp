@@ -37,35 +37,68 @@ void datalogProgram::compile_Domain() { // perhaps call this at end of parser
   Domain.erase( unique( Domain.begin(), Domain.end() ), Domain.end() );
 }
 
-string datalogProgram::to_String() {
-  stringstream to_return;
-  const char* indent = "  ";
-  to_return << "Schemes(" << Schemes.size() << "):\n";
-  for (size_t i = 0; i < Schemes.size(); i++) {
-    to_return << indent << Schemes[i].to_String() << '\n';
-  }
-  to_return << "Facts(" << Facts.size() << "):\n";
-  for (size_t i = 0; i < Facts.size(); i++) {
-    to_return << indent << Facts[i].to_String() << ".\n";
-  }
-  to_return << "Rules(" << Rules.size() << "):\n";
-  for (size_t i = 0; i < Rules.size(); i++) {
-    to_return << indent << Rules[i].to_String() << ".\n";
-  }
-  to_return << "Queries(" << Queries.size() << "):\n";
+void datalogProgram::answer_Queries() {
   for (size_t i = 0; i < Queries.size(); i++) {
-    to_return << indent << Queries[i].to_String() << "?\n";
+    Query_Answers.push_back(construct_QAR(Relations[Queries[i].name],
+      Queries[i].parameters));
   }
-  to_return << "Domain(" << Domain.size() << "):\n";
-  for (size_t i = 0; i < Domain.size(); i++) {
-    to_return << indent << Domain[i] << "\n";
+}
+
+Relation datalogProgram::construct_QAR(Relation R, vector<shared_ptr<parameter>> P) {
+  QAList QAL(R, P);
+  Relation RCopy(R.get_Name(), R.get_Header(), R.get_Rows());
+  make_Selects(RCopy, QAL);
+  QAL.sort();
+  make_Projects(RCopy, QAL);
+  make_Renames(RCopy, QAL);
+  return RCopy;
+}
+
+void datalogProgram::make_Selects(Relation & R, QAList QAL) {
+  QAList pure_IDs;
+  for (size_t i = 0; i < QAL.size(); i++) {
+    if (QAL(i,1).token == STRING) R = R.Select(QAL(i,0), EQUALS, QAL(i,1));
+    else pure_IDs.push_back(QAL(i));
   }
-  //----------------------FOR TESTING PURPOSES ONLY-----------------------------
-  to_return << "Relations(" << Relations.size() << "):\n";
-  for (auto n_it : Relations) {
-    to_return << n_it.second.to_String();
+  std::sort(pure_IDs.get_cdo().begin(), pure_IDs.get_cdo().end(), ParamPair_less());
+  for (size_t i = 0; i < pure_IDs.size(); i++) {
+    if (i < pure_IDs.size() - 1 && pure_IDs(i,1).value == pure_IDs(i+1,1).value) {
+      R = R.Select(pure_IDs(i,0), EQUALS, pure_IDs(i+1,0));
+    }
   }
-  return to_return.str();
+}
+
+void datalogProgram::make_Projects(Relation & R, QAList QAL) {
+  vector<parameter> Att_List;
+  if (QAL.size() == 0) {
+    Show_Commands.push_back(false);
+    return;
+  }
+  else Show_Commands.push_back(true);
+  for (size_t i = 0; i < QAL.size(); i++) {
+    Att_List.push_back(QAL(i,0));
+  }
+  R = R.Project(Att_List);
+}
+
+void datalogProgram::make_Renames(Relation & R, QAList QAL) {
+  for (size_t i = 0; i < QAL.size(); i++) {
+    R = R.Rename(QAL(i,0), QAL(i,1));
+  }
+}
+
+string datalogProgram::to_String() {
+  stringstream ss;
+  for (size_t i = 0; i < Queries.size(); i++) {
+    ss << Queries[i].to_String() << "? ";
+    int num_answer_rows = Query_Answers[i].get_Rows().size();
+    if (num_answer_rows == 0) ss << "No\n";
+    else {
+      ss << "Yes(" << num_answer_rows << ")\n";
+      if (Show_Commands[i]) ss << Query_Answers[i].to_String();
+    }
+  }
+  return ss.str();
 }
 
 datalogProgram::~datalogProgram() {}

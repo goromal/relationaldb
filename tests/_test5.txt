@@ -1,25 +1,22 @@
-#| TEST5 - should return success despite extra schemelist
-items.
-|#
-Schemes:
-	snap(S,N,A,P)
-	snap(H,A,S)
-	snap(N,O,T)
-
-#comment
-
-	HasSameAddress(X,Y)
-
-Facts: #comment
-	snap('12345','C. Brown','12 Apple','555-1234').
-	snap('33333','Snoopy','12 Apple','555-1234').
-
+Schemes: 
+	people(person1,person2)
+	employer(boss,employee)
+Facts:
+	people('joe','bob').
+	people('jim','bob').
+	people('joe','jim').
+	employer('ralph','howard').
+	people('bob','bob').
 Rules:
-	HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,E).
-	HasSamePhone(X,Y) :- snap(A,X,B,C),snap(D,Y,E,C).
-
-#comment
-
+	employer(X,Y):- people(Y,X).
+	employer(X,Y):- people(X,Z),employer(Z,Y).
+	people(X,Y):- people(Y,X).
 Queries:
-	HasSameAddress('Snoopy',Who)?
-	HasSamePhone('C. Brown',Who)?
+	people('joe','jim')?
+	people( who, 'bob')?
+	people('joe', anyone)?
+	people(X,X)?
+	people(X,Y)?
+	employer('ralph', X)?
+	employer('bob','bob')?
+	employer(X,Y)?

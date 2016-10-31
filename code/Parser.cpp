@@ -18,13 +18,15 @@ TokenType Parser::get_top() {
 
 void Parser::process_input() {
   processed_valid_language = _datalogProgram();
-  Program.compile_Domain();
+  if (processed_valid_language) {
+    //Program.compile_Domain();
+    Program.answer_Queries();
+  }
 }
 
-void Parser::print_results() { // <<< MODIFY THIS USING Program DATAMEMBER +++++++++++++++++++++++++++
+void Parser::print_results() {
   if (processed_valid_language) {
-    cout << "Success!\n";
-    cout << Program.to_String();//+++++++++++++++++++++++++++++++++++++++++++++++
+    cout << Program.to_String();
   }
   else {
     cout << "Failure!\n  " <<

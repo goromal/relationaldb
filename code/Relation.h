@@ -10,8 +10,6 @@
 #include <iterator>
 #include <iomanip>
 
-enum Comparator {EQUALS, LESS_THAN, GREATER_THAN}; // ASSUMING ONLY <EQUALS> WILL BE USED
-
 /* NOTE: Implicit assumption that header will be ID type and items will be
          STRING type--anomalies will be handled in the "upper levels".
 
@@ -122,8 +120,12 @@ public:
   Relation Rename(parameter _Att, parameter _new_Att);
   //Relation Nat_Join();
   string to_String();
+  string to_String_test();
+  string get_Name();
   const string & get_Name() const;
+  Tuple get_Header();
   const Tuple & get_Header() const;
+  my_set get_Rows();
   const my_set & get_Rows() const;
   ~Relation();
 private:

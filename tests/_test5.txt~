@@ -1,7 +1,10 @@
-#| TEST1 - should return success
+#| TEST5 - should return success despite extra schemelist
+items.
 |#
 Schemes:
 	snap(S,N,A,P)
+	snap(H,A,S)
+	snap(N,O,T)
 
 #comment
 
@@ -10,14 +13,13 @@ Schemes:
 Facts: #comment
 	snap('12345','C. Brown','12 Apple','555-1234').
 	snap('33333','Snoopy','12 Apple','555-1234').
-	snap('a','b','c','d').
 
 Rules:
 	HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,E).
+	HasSamePhone(X,Y) :- snap(A,X,B,C),snap(D,Y,E,C).
 
 #comment
 
 Queries:
-	snap('33333','Snoopy','12 Apple','555-1234')?
-	snap('a','b','c','d')?
-	snap('a',X,'c','d')?
+	HasSameAddress('Snoopy',Who)?
+	HasSamePhone('C. Brown',Who)?

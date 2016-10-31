@@ -117,6 +117,39 @@ Relation Relation::Rename(parameter _Att, parameter _new_Att) {
 }
 
 string Relation::to_String() {
+  // NOTE: The following sub-section is only meant for the stringent TA tests:
+  vector<Tuple> tuple_row_vector;
+  for (const auto& tuple_row : Rows) {
+    tuple_row_vector.push_back(tuple_row);
+  }
+  std::sort(tuple_row_vector.begin(), tuple_row_vector.end(),
+    [](const Tuple & t1, const Tuple & t2) -> bool {
+      size_t tuple_size = t1.Items.size();
+      size_t tuple_itnum = 0;
+      while (tuple_itnum < tuple_size) {
+        if (t1.Items[tuple_itnum] < t2.Items[tuple_itnum]) return true;
+        else if (t1.Items[tuple_itnum] == t2.Items[tuple_itnum]) tuple_itnum++;
+        else return false;
+      }
+      return false;
+    });
+  //==========================================================================
+  stringstream ss;
+  const char* indent = "  ";
+  string delimiter;
+  for (const auto& tuple_row : tuple_row_vector) { // "Rows" changed to "t_r_v"
+    delimiter = "";
+    ss << indent;
+    for (size_t i = 0; i < num_columns; i++) {
+      ss << delimiter << Header.Items[i] << "=" << tuple_row.Items[i];
+      delimiter = ", ";
+    }
+    ss << '\n';
+  }
+  return ss.str();
+}
+
+string Relation::to_String_test() {
   stringstream ss;
   int lmargin_width = Name.length() + 3;
   // Get Max Column Widths
@@ -158,12 +191,24 @@ string Relation::to_String() {
   return ss.str();
 }
 
+string Relation::get_Name() {
+  return Name;
+}
+
 const string & Relation::get_Name() const {
   return Name;
 }
 
+Tuple Relation::get_Header() {
+  return Header;
+}
+
 const Tuple & Relation::get_Header() const {
   return Header;
+}
+
+my_set Relation::get_Rows() {
+  return Rows;
 }
 
 const my_set & Relation::get_Rows() const {

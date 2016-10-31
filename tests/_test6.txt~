@@ -1,5 +1,5 @@
 Schemes:
-  SK(A,B,C,D)
+  SK(A,B)
 Facts:
   SK('a','c','c','d').
   SK('b','c','d','e').

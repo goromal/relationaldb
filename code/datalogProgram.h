@@ -1,7 +1,6 @@
 #ifndef _DLP_
 #define _DLP_
-#include "dp_Objects.h"
-#include "Relation.h"
+#include "QA_List.h"
 
 class datalogProgram {
 public:
@@ -11,6 +10,7 @@ public:
   void add_Rule(rule _rule);
   void add_Query(predicate _predicate);
   void compile_Domain();
+  void answer_Queries();
   string to_String();
   ~datalogProgram();
 //
@@ -20,7 +20,13 @@ public:
   vector<predicate> Queries;
   vector<string> Domain;
 private:
+  Relation construct_QAR(Relation R, vector<shared_ptr<parameter>> P);
+  void make_Selects(Relation & R, QAList QAL);
+  void make_Projects(Relation & R, QAList QAL);
+  void make_Renames(Relation & R, QAList QAL);
   map<string,Relation> Relations;
+  vector<Relation> Query_Answers;
+  vector<bool> Show_Commands;
 };
 
 #endif

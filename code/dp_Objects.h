@@ -8,6 +8,8 @@ class expression; // parameter operator parameter
 struct predicate; // ID(parameter[s]) << essentially a function
 struct rule; // predicate :- predicate[s]
 
+enum Comparator {EQUALS, LESS_THAN, GREATER_THAN}; // ASSUMING ONLY <EQUALS> WILL BE USED
+
 /*
   Schemes: simply a list of declared predicates
   Facts: a list of (data) predicates that store real info
