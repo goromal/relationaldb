@@ -13,7 +13,6 @@ public:
   void answer_Queries();
   string to_String();
   ~datalogProgram();
-//
   vector<predicate> Schemes;
   vector<predicate> Facts;
   vector<rule> Rules;

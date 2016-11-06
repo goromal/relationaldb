@@ -1,5 +1,100 @@
 #include "Relation.h"
 
+Tuple::Tuple(vector<shared_ptr<parameter>> _Parameters) {
+  for (size_t i = 0; i < _Parameters.size(); i++) {
+    Items.push_back(_Parameters[i]->value);
+  }
+}
+
+Tuple::Tuple(vector<string> _Items) {
+  for (const auto& item : _Items) Items.push_back(item);
+}
+
+bool Tuple::operator==(const Tuple & other) const {
+  if (Items.size() != other.Items.size()) return false;
+  for (size_t i = 0; i < Items.size(); i++) {
+    if (Items[i] != other.Items[i]) return false;
+  }
+  return true;
+}
+
+Tuple::Tuple(const Tuple & other) {
+  for (size_t i = 0; i < other.Items.size(); i++) {
+    Items.push_back(other.Items[i]);
+  }
+}
+
+Tuple & Tuple::operator=(Tuple && other) noexcept {
+  Items.clear();
+  for (size_t i = 0; i < other.Items.size(); i++) {
+    Items.push_back(other.Items[i]);
+  }
+  other.Items.clear();
+  return *this;
+}
+
+Tuple & Tuple::operator=(const Tuple & other) {
+  Tuple tmp(other);               // re-use Copy constructor
+  *this = std::move(tmp);         // re-use Move assignment operator
+  return *this;
+}
+
+index_tracker::index_tracker(size_t i1, size_t i2) {
+  indexes[0] = i1;
+  indexes[1] = i2;
+}
+
+index_tracker::index_tracker() {
+  indexes[0] = 0;
+  indexes[1] = 0;
+}
+
+size_t& index_tracker::operator()(unsigned int i) {
+  assert(i <= 1);
+  return indexes[i];
+}
+
+const size_t& index_tracker::operator()(unsigned int i) const {
+  assert(i <= 1);
+  return indexes[i];
+}
+
+nat_join_helper::nat_join_helper(const Relation& a, const Relation& b) {
+  index_tracker _max_indexes(a.get_Header().Items.size(), b.get_Header().Items.size());
+  max_indexes = _max_indexes;
+
+  // Get index pairs and set up disjoint attribute acquisitions
+  vector<size_t> first_index_domain;
+  vector<size_t> second_index_domain;
+  vector<size_t> first_temp_matches;
+  vector<size_t> second_temp_matches;
+  for (size_t i = 0; i < max_indexes(0); i++) {
+    first_index_domain.push_back(i);
+    for (size_t j = 0; j < max_indexes(1); j++) {
+      if (i == 0) second_index_domain.push_back(j);
+      if (a.get_Header().Items[i] == b.get_Header().Items[j]) {
+        first_temp_matches.push_back(i);
+        second_temp_matches.push_back(j);
+        common_indexes.push_back(index_tracker(i, j));
+      }}}
+
+  // Get indexes of disjoint attributes
+  first_disjoint_indexes.resize(max_indexes(0));
+  second_disjoint_indexes.resize(max_indexes(1));
+
+  vector<size_t>::iterator it1;
+  it1 = std::set_difference(first_index_domain.begin(), first_index_domain.end(),
+                           first_temp_matches.begin(), first_temp_matches.end(),
+                           first_disjoint_indexes.begin());
+  first_disjoint_indexes.resize(it1 - first_disjoint_indexes.begin());
+
+  vector<size_t>::iterator it2;
+  it2 = std::set_difference(second_index_domain.begin(), second_index_domain.end(),
+                           second_temp_matches.begin(), second_temp_matches.end(),
+                           second_disjoint_indexes.begin());
+  second_disjoint_indexes.resize(it2 - second_disjoint_indexes.begin());
+}
+
 Relation::Relation() {
   Name = "";
   Tuple blank;
@@ -59,6 +154,50 @@ Relation Relation::operator-(const Relation & other) const {
     other.get_Rows().begin(), other.get_Rows().end(),
     std::inserter(subtracted_set, subtracted_set.begin()));
   return Relation(Name, Header, subtracted_set);
+}
+
+void tuple_element_filer(const nat_join_helper _helper, vector<string> & _tuple_strings,
+                    const Tuple _Ta, const Tuple _Tb) {
+  for (const auto& common_index : _helper.common_indexes) {
+    _tuple_strings.push_back(_Ta.Items[common_index(0)]);
+  }
+  for (const auto& f_d_j : _helper.first_disjoint_indexes) {
+    _tuple_strings.push_back(_Ta.Items[f_d_j]);
+  }
+  for (const auto& s_d_j : _helper.second_disjoint_indexes) {
+    _tuple_strings.push_back(_Tb.Items[s_d_j]);
+  }
+}
+
+Relation Relation::operator%(const Relation & other) const {
+  nat_join_helper helper(*this, other);
+
+  // Compile Name
+  stringstream new_name;
+  new_name << Name << "-NJ-" << other.get_Name();
+
+  // Compile Header
+  vector<string> new_header_strings;
+  tuple_element_filer(helper, new_header_strings, this->get_Header(), other.get_Header());
+
+  // Compile Rows
+  my_set new_rows;
+  for (const auto& this_tuple : Rows) {
+    for (const auto& other_tuple : other.Rows) {
+      vector<string> new_row_vec;
+      bool common_indexes_match = true;
+      for (size_t i = 0; i < helper.common_indexes.size(); i++) {
+        if (this_tuple.Items[helper.common_indexes[i](0)] !=
+           other_tuple.Items[helper.common_indexes[i](1)]) common_indexes_match = false;
+      }
+      if (common_indexes_match) {
+        tuple_element_filer(helper, new_row_vec, this_tuple, other_tuple);
+        new_rows.insert(Tuple(new_row_vec));
+      }
+    }
+  }
+
+  return Relation(new_name.str(), Tuple(new_header_strings), new_rows);
 }
 
 bool Relation::operator==(const Relation & other) const {
@@ -137,7 +276,7 @@ string Relation::to_String() {
   stringstream ss;
   const char* indent = "  ";
   string delimiter;
-  for (const auto& tuple_row : tuple_row_vector) { // "Rows" changed to "t_r_v"
+  for (const auto& tuple_row : tuple_row_vector) { // "Rows"->"tuple_row_vector"
     delimiter = "";
     ss << indent;
     for (size_t i = 0; i < num_columns; i++) {

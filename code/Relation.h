@@ -10,6 +10,8 @@
 #include <iterator>
 #include <iomanip>
 
+class Relation;
+
 /* NOTE: Implicit assumption that header will be ID type and items will be
          STRING type--anomalies will be handled in the "upper levels".
 
@@ -20,42 +22,15 @@
 struct Tuple { // NOTE: ASSUMES THAT YOU ARE RECEIVING "NORMAL" PARAMETERS (!!)
   vector<string> Items;
   Tuple() {}
-  Tuple(vector<shared_ptr<parameter>> _Parameters) {
-    for (size_t i = 0; i < _Parameters.size(); i++) {
-      Items.push_back(_Parameters[i]->value);
-    }
-  }
-  Tuple(vector<string> _Items) {
-    for (const auto& item : _Items) Items.push_back(item);
-  }
-  bool operator==(const Tuple & other) const {
-    if (Items.size() != other.Items.size()) return false;
-    for (size_t i = 0; i < Items.size(); i++) {
-      if (Items[i] != other.Items[i]) return false;
-    }
-    return true;
-  }
+  Tuple(vector<shared_ptr<parameter>> _Parameters);
+  Tuple(vector<string> _Items);
+  bool operator==(const Tuple & other) const;
   /** Copy constructor */
-  Tuple(const Tuple & other) {
-    for (size_t i = 0; i < other.Items.size(); i++) {
-      Items.push_back(other.Items[i]);
-    }
-  }
+  Tuple(const Tuple & other);
   /** Move assignment operator */
-  Tuple & operator=(Tuple && other) noexcept {
-    Items.clear();
-    for (size_t i = 0; i < other.Items.size(); i++) {
-      Items.push_back(other.Items[i]);
-    }
-    other.Items.clear();
-    return *this;
-  }
+  Tuple & operator=(Tuple && other) noexcept;
   /** Copy assignment operator */
-  Tuple & operator=(const Tuple & other) {
-    Tuple tmp(other);               // re-use Copy constructor
-    *this = std::move(tmp);         // re-use Move assignment operator
-    return *this;
-  }
+  Tuple & operator=(const Tuple & other);
 };
 
 /** UNORDERED_SET SETUP
@@ -98,6 +73,22 @@ struct TupleHash {
   }
 };
 
+struct index_tracker { // (#1,#2) index of first tuple and corresponding index in second
+  size_t indexes[2];
+  index_tracker(size_t i1, size_t i2);
+  index_tracker();
+  size_t& operator()(unsigned int i);
+	const size_t& operator()(unsigned int i) const;
+};
+
+struct nat_join_helper {
+  index_tracker max_indexes;
+  vector<index_tracker> common_indexes;
+  vector<size_t> first_disjoint_indexes;
+  vector<size_t> second_disjoint_indexes;
+  nat_join_helper(const Relation& a, const Relation& b);
+};
+
 using my_set = std::unordered_set<Tuple, TupleHash>;
 
 /** RELATION CLASS SETUP
@@ -114,11 +105,11 @@ public:
   Relation operator+(const Relation & other) const; // UNION OPERATOR
   Relation operator*(const Relation & other) const; // INTERSECTION OPERATOR
   Relation operator-(const Relation & other) const; // MINUS OPERATOR
+  Relation operator%(const Relation & other) const; // NATURAL JOIN OPERATOR
   bool operator==(const Relation & other) const;
   Relation Select(parameter _Att, Comparator _comp, parameter _Inst);// NOTE: Assumes only EQUALS comparator
   Relation Project(vector<parameter> _Att_list);
   Relation Rename(parameter _Att, parameter _new_Att);
-  //Relation Nat_Join();
   string to_String();
   string to_String_test();
   string get_Name();
