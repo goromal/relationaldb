@@ -96,7 +96,7 @@ void datalogProgram::answer_Queries() {
   }
 }
 
-Relation datalogProgram::construct_QAR(Relation R, vector</*shared_ptr<parameter>*/parameter> P) {
+Relation datalogProgram::construct_QAR(Relation R, vector<parameter> P) {
   QAList QAL(R, P);
   Relation RCopy(R.get_Name(), R.get_Header(), R.get_Rows());
   make_Selects(RCopy, QAL);

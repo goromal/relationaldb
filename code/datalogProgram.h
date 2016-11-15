@@ -21,7 +21,7 @@ public:
   vector<string> Domain;
 private:
   int num_rule_iterations;
-  Relation construct_QAR(Relation R, vector</*shared_ptr<parameter>*/parameter> P);
+  Relation construct_QAR(Relation R, vector<parameter> P);
   void make_Selects(Relation & R, const QAList & QAL);
   void make_Projects(Relation & R, const QAList & QAL);
   void make_Renames(Relation & R, const QAList & QAL, bool reverse = false);

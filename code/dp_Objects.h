@@ -27,32 +27,19 @@ public:
   TokenType token;
   string value;
 };
-/*
-class expression : public parameter {
-public:
-  expression();
-  expression(shared_ptr<parameter> _lp, TokenType _op, shared_ptr<parameter> _rp);
-  expression(const expression&) = default;
-  expression& operator=(const expression& other) = default;
-  string to_String();
-  ~expression() = default;
-  shared_ptr<parameter> lp;
-  shared_ptr<parameter> rp;
-  TokenType op;
-};
-*/
+
 struct predicate {
   predicate();
-  predicate(string _name, /*shared_ptr<parameter>*/parameter _p);
+  predicate(string _name, parameter _p);
   predicate(const predicate& other); //                   COPY CONSTRUCTOR
   predicate& operator=(predicate && other) noexcept; //   MOVE OPERATOR
   predicate& operator=(const predicate& other); //        ASSIGNMENT OPERATOR
-  void add_Param(/*shared_ptr<parameter>*/parameter _p);
+  void add_Param(parameter _p);
   string to_String();
   ~predicate() = default;
   //
   string name;
-  vector</*shared_ptr<parameter>*/parameter> parameters;
+  vector<parameter> parameters;
 };
 
 struct rule {

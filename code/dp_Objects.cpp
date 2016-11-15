@@ -1,28 +1,5 @@
 #include "dp_Objects.h"
-/*
-expression::expression() {
-  lp = shared_ptr<parameter>(new parameter());
-  rp = shared_ptr<parameter>(new parameter());
-  op = UNDEFINED;
-}
 
-expression::expression(shared_ptr<parameter> _lp, TokenType _op, shared_ptr<parameter> _rp) {
-  lp = _lp;
-  rp = _rp;
-  op = _op;
-}
-
-string expression::to_String() {
-  stringstream to_return;
-  to_return << "(";
-  to_return << lp->to_String();
-  if (op == ADD) to_return << '+';
-  else to_return << '*';
-  to_return << rp->to_String();
-  to_return << ")";
-  return to_return.str();
-}
-*/
 parameter::parameter() {
   token = UNDEFINED;
   value = "";

@@ -22,7 +22,7 @@ class Relation;
 struct Tuple { // NOTE: ASSUMES THAT YOU ARE RECEIVING "NORMAL" PARAMETERS (!!)
   vector<string> Items;
   Tuple() {}
-  Tuple(vector</*shared_ptr<parameter>*/parameter> _Parameters);
+  Tuple(vector<parameter> _Parameters);
   Tuple(vector<string> _Items);
   bool operator==(const Tuple & other) const;
   /** Copy constructor */

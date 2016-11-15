@@ -1,8 +1,8 @@
 #include "Relation.h"
 
-Tuple::Tuple(vector</*shared_ptr<parameter>*/parameter> _Parameters) {
+Tuple::Tuple(vector<parameter> _Parameters) {
   for (size_t i = 0; i < _Parameters.size(); i++) {
-    Items.push_back(_Parameters[i].value); // . from ->
+    Items.push_back(_Parameters[i].value);
   }
 }
 
