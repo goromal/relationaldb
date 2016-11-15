@@ -11,4 +11,4 @@ insert const stuff like in relation.h wherever appropriate and useful.
 - implement algorithm as project description says [X]
 - go through all methods in rule and query evaluation and make sure variables passed by reference [X..]
 	- and const [X..]
-- comment out assert statements [X]
+- comment out assert statements

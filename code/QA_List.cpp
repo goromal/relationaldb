@@ -19,11 +19,11 @@ QAList::QAList() {
   cdo_size = 0;
 }
 
-QAList::QAList(Relation R, vector<shared_ptr<parameter>> P) {
+QAList::QAList(Relation R, vector</*shared_ptr<parameter>*/parameter> P) {
   cdo_size = P.size();
   for (size_t i = 0; i < P.size(); i++) {
     parameter Hp(ID, R.get_Header().Items[i]);
-    core_data_obj.push_back(ParamPair(Hp, *P[i]));
+    core_data_obj.push_back(ParamPair(Hp, /***/P[i]));
   }
 }
 

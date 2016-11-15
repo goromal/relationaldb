@@ -1,22 +1,39 @@
-#| TEST4 - should return an error for the extra
-q_mark on line 21.
-|#
 Schemes:
-	snap(S,N,A,P)
+A(a,b)
+rA(a,b)
+Reflexive(a,b)
 
-#comment
+colB(b)
+Symmetric(a,b)
+Transitive(a,b)
+SymTran(a,b)
 
-	HasSameAddress(X,Y)
-
-Facts: #comment
-	snap('12345','C. Brown','12 Apple','555-1234').
-	snap('33333','Snoopy','12 Apple','555-1234').
-        snap('45454','Isaac','44 Peach Tree','364-9552').
+Facts:
+A('1','2').
+A('2','3').
+A('3','4').
+A('4','5').
+A('5','6').
+A('6','7').
+A('7','8').
+A('8','9').
+A('9','10').
 
 Rules:
-	HasSameAddress(X,Y) :- snap(A,X,B,C),snap(D,Y,B,E).
-
-#comment
+Symmetric(X,Y) :- A(X,Y).
+Symmetric(X,Y) :- Symmetric(Y,X).
+rA(a,b) :- A(b,a).
+Reflexive(X,Y) :- A(X,Z),rA(Z,Y). #????
+Transitive(X,Y) :- A(X,Y).
+Transitive(X,Z) :- Transitive(X,Y),Transitive(Y,Z).
+SymTran(X,Y) :- SymTran(Y,X).
+SymTran(X,Z) :- SymTran(X,Y),SymTran(Y,Z).
+SymTran(X,Y) :- A(Y,X).
 
 Queries:
-	HasSameAddress('Snoopy',Who)??
+Symmetric(Q,R)?
+Reflexive(Q,R)?
+Transitive('1',P)?
+A('1','2')?
+Symmetric('2','1')?
+SymTran(X,Y)?

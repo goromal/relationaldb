@@ -3,7 +3,7 @@
 #include "dp_Objects.h"
 #include "center_text.h"
 // uncomment to disable assert()
-// #define NDEBUG
+#define NDEBUG
 #include <cassert>
 #include <unordered_set>
 #include <functional>
@@ -22,7 +22,7 @@ class Relation;
 struct Tuple { // NOTE: ASSUMES THAT YOU ARE RECEIVING "NORMAL" PARAMETERS (!!)
   vector<string> Items;
   Tuple() {}
-  Tuple(vector<shared_ptr<parameter>> _Parameters);
+  Tuple(vector</*shared_ptr<parameter>*/parameter> _Parameters);
   Tuple(vector<string> _Items);
   bool operator==(const Tuple & other) const;
   /** Copy constructor */
@@ -108,8 +108,9 @@ public:
   Relation operator%(const Relation & other) const; // NATURAL JOIN OPERATOR
   bool operator==(const Relation & other) const;
   Relation Select(parameter _Att, Comparator _comp, parameter _Inst);// NOTE: Assumes only EQUALS comparator
-  Relation Project(vector<parameter> _Att_list);
-  Relation Rename(parameter _Att, parameter _new_Att);
+  Relation Project(const vector<parameter> & _Att_list);
+  Relation Rename(const parameter & _Att, const parameter & _new_Att);
+  Relation Rename(const vector<parameter> & new_header); // For safe, simultaneous full-header changes
   string to_String();
   string to_String_test();
   string get_Name();

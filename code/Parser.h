@@ -17,7 +17,7 @@ private:
   bool processed_valid_language = false;
   TokenType get_top();
   vector<string> param_buffer;
-  vector<shared_ptr<parameter>> mixed_param_buffer;
+  vector</*shared_ptr<parameter>*/parameter> mixed_param_buffer;
   vector<predicate> pred_buffer;
   vector<TokenType> token_buffer;
   // The recursive tree nodes:
@@ -42,12 +42,12 @@ private:
   bool _predicateList();
   bool _parameter();
   bool _parameterList();
-  bool _expression();
-  bool _expression2();
+  //bool _expression();
+  //bool _expression2();
   bool _operator();
   bool _query();
   bool _queryList();
-  bool _stringList();                                 
+  bool _stringList();
 };
 
 #endif

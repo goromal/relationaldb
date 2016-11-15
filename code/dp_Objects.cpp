@@ -1,5 +1,5 @@
 #include "dp_Objects.h"
-
+/*
 expression::expression() {
   lp = shared_ptr<parameter>(new parameter());
   rp = shared_ptr<parameter>(new parameter());
@@ -22,7 +22,7 @@ string expression::to_String() {
   to_return << ")";
   return to_return.str();
 }
-
+*/
 parameter::parameter() {
   token = UNDEFINED;
   value = "";
@@ -43,7 +43,7 @@ predicate::predicate() {
   name = "";
 }
 
-predicate::predicate(string _name, shared_ptr<parameter> _p) {
+predicate::predicate(string _name, /*shared_ptr<parameter>*/parameter _p) {
   name = _name;
   parameters.push_back(_p);
 }
@@ -71,7 +71,7 @@ predicate& predicate::operator=(const predicate& other) {
   return *this;
 }
 
-void predicate::add_Param(shared_ptr<parameter> _p) {
+void predicate::add_Param(/*shared_ptr<parameter>*/parameter _p) {
   parameters.push_back(_p);
 }
 
@@ -80,7 +80,7 @@ string predicate::to_String() {
   const char* separator = "";
   to_return << name << "(";
   for (size_t i = 0; i < parameters.size(); i++) {
-    to_return << separator << parameters[i]->to_String();
+    to_return << separator << parameters[i].to_String(); // to . from ->
     separator = ",";
   }
   to_return << ")";

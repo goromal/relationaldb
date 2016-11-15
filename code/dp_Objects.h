@@ -27,7 +27,7 @@ public:
   TokenType token;
   string value;
 };
-
+/*
 class expression : public parameter {
 public:
   expression();
@@ -40,19 +40,19 @@ public:
   shared_ptr<parameter> rp;
   TokenType op;
 };
-
+*/
 struct predicate {
   predicate();
-  predicate(string _name, shared_ptr<parameter> _p);
+  predicate(string _name, /*shared_ptr<parameter>*/parameter _p);
   predicate(const predicate& other); //                   COPY CONSTRUCTOR
   predicate& operator=(predicate && other) noexcept; //   MOVE OPERATOR
   predicate& operator=(const predicate& other); //        ASSIGNMENT OPERATOR
-  void add_Param(shared_ptr<parameter> _p);
+  void add_Param(/*shared_ptr<parameter>*/parameter _p);
   string to_String();
   ~predicate() = default;
   //
   string name;
-  vector<shared_ptr<parameter>> parameters;
+  vector</*shared_ptr<parameter>*/parameter> parameters;
 };
 
 struct rule {

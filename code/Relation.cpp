@@ -1,8 +1,8 @@
 #include "Relation.h"
 
-Tuple::Tuple(vector<shared_ptr<parameter>> _Parameters) {
+Tuple::Tuple(vector</*shared_ptr<parameter>*/parameter> _Parameters) {
   for (size_t i = 0; i < _Parameters.size(); i++) {
-    Items.push_back(_Parameters[i]->value);
+    Items.push_back(_Parameters[i].value); // . from ->
   }
 }
 
@@ -156,8 +156,8 @@ Relation Relation::operator-(const Relation & other) const {
   return Relation(Name, Header, subtracted_set);
 }
 
-void tuple_element_filer(const nat_join_helper _helper, vector<string> & _tuple_strings,
-                    const Tuple _Ta, const Tuple _Tb) {
+void tuple_element_filer(const nat_join_helper & _helper, vector<string> & _tuple_strings,
+                    const Tuple & _Ta, const Tuple & _Tb) {
   for (const auto& common_index : _helper.common_indexes) {
     _tuple_strings.push_back(_Ta.Items[common_index(0)]);
   }
@@ -202,7 +202,9 @@ Relation Relation::operator%(const Relation & other) const {
 
 bool Relation::operator==(const Relation & other) const {
   assert(Header == other.get_Header());
-  return Rows == other.get_Rows();
+  if (Header == other.get_Header()) return Rows == other.get_Rows();
+  else return false;
+  //return Rows == other.get_Rows();
 }
 
 Relation Relation::Select(parameter _Att, Comparator _comp, parameter _Inst) {
@@ -225,10 +227,11 @@ Relation Relation::Select(parameter _Att, Comparator _comp, parameter _Inst) {
   return Relation(Name, Header, new_Rows);
 }
 
-Relation Relation::Project(vector<parameter> _Att_list) {
+Relation Relation::Project(const vector<parameter> & _Att_list) {
+  /* // Commented out to avoid unused variable warning when assert is disabled
   for (const auto& att : _Att_list) {
     assert(std::find(Header.Items.begin(), Header.Items.end(), att.value) != Header.Items.end());
-  }
+  }*/
   vector<size_t> indexes;
   Tuple new_Header;
   for (const auto& att : _Att_list) {
@@ -246,13 +249,17 @@ Relation Relation::Project(vector<parameter> _Att_list) {
   return Relation(Name, new_Header, new_Rows);
 }
 
-Relation Relation::Rename(parameter _Att, parameter _new_Att) {
+Relation Relation::Rename(const parameter & _Att, const parameter & _new_Att) {
   assert(_Att.token == ID && _new_Att.token == ID &&
     std::find(Header.Items.begin(), Header.Items.end(), _Att.value) != Header.Items.end());
   int pos = std::find(Header.Items.begin(), Header.Items.end(), _Att.value) - Header.Items.begin();
   Tuple tmp(Header);
   tmp.Items[pos] = _new_Att.value;
   return Relation(Name, tmp, Rows);
+}
+
+Relation Relation::Rename(const vector<parameter> & new_header) {
+  return Relation(Name, new_header, Rows);
 }
 
 string Relation::to_String() {

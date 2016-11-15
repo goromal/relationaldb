@@ -20,4 +20,4 @@ Rules:
 Queries:
 	snap('33333','Snoopy','12 Apple','555-1234')?
 	snap('a','b','c','d')?
-	snap('a','c','c','d')?
+	snap('a',X,'c','d')?

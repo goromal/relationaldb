@@ -20,6 +20,7 @@ void Parser::process_input() {
   processed_valid_language = _datalogProgram();
   if (processed_valid_language) {
     //Program.compile_Domain();
+    Program.evaluate_Rules();
     Program.answer_Queries();
   }
 }
@@ -87,8 +88,11 @@ bool Parser::_scheme() {
   if (get_top() == LEFT_PAREN) current_position++;
   else return false;
   if (get_top() == ID) {
+    /*
     auto p = shared_ptr<parameter>(new parameter(ID,
       TokenInfo_vector[current_position].value));
+      */
+    parameter p(ID, TokenInfo_vector[current_position].value);
     newScheme = predicate(scheme_name, p);
     current_position++;
   }
@@ -99,8 +103,11 @@ bool Parser::_scheme() {
 bool Parser::_scheme2(predicate scheme_obj) {
   if (!_idList()) return false;
   for (size_t i = 0; i < param_buffer.size(); i++) {
+    /*
     auto p = shared_ptr<parameter>(new parameter(ID,
       param_buffer[i]));
+      */
+    parameter p(ID, param_buffer[i]);
     scheme_obj.add_Param(p);
   }
   param_buffer.clear();
@@ -147,8 +154,10 @@ bool Parser::_fact() {
   if (get_top() == LEFT_PAREN) current_position++;
   else return false;
   if (get_top() == STRING) {
+    /*
     auto p = shared_ptr<parameter>(new parameter(STRING,
-      TokenInfo_vector[current_position].value));
+      TokenInfo_vector[current_position].value));*/
+    parameter p(STRING, TokenInfo_vector[current_position].value);
     newFact = predicate(fact_name, p);
     current_position++;
   }
@@ -159,8 +168,9 @@ bool Parser::_fact() {
 bool Parser::_fact2(predicate fact_obj) {
   if (!_stringList()) return false;
   for (size_t i = 0; i < param_buffer.size(); i++) {
-    auto p = shared_ptr<parameter>(new parameter(STRING,
-      param_buffer[i]));
+    /*auto p = shared_ptr<parameter>(new parameter(STRING,
+      param_buffer[i]));*/
+    parameter p(STRING, param_buffer[i]);
     fact_obj.add_Param(p);
   }
   param_buffer.clear();
@@ -220,8 +230,9 @@ bool Parser::_headPredicate() {
   if (get_top() == LEFT_PAREN) current_position++;
   else return false;
   if (get_top() == ID) {
-    auto p = shared_ptr<parameter>(new parameter(ID,
-      TokenInfo_vector[current_position].value));
+    /*auto p = shared_ptr<parameter>(new parameter(ID,
+      TokenInfo_vector[current_position].value));*/
+    parameter p(ID, TokenInfo_vector[current_position].value);
     newPred.name = headPred_name;
     newPred.parameters.push_back(p);
     current_position++;
@@ -233,8 +244,9 @@ bool Parser::_headPredicate() {
 bool Parser::_headPredicate2(predicate Pred) {
   if (!_idList()) return false;
   for (size_t i = 0; i < param_buffer.size(); i++) {
-    auto p = shared_ptr<parameter>(new parameter(ID,
-      param_buffer[i]));
+    /*auto p = shared_ptr<parameter>(new parameter(ID,
+      param_buffer[i]));*/
+    parameter p(ID, param_buffer[i]);
     Pred.add_Param(p);
   }
   param_buffer.clear();
@@ -287,20 +299,22 @@ bool Parser::_predicateList() {
 }
 
 bool Parser::_parameter() { // THREE OPTIONS
-  if (get_top() == LEFT_PAREN) {
+  /*if (get_top() == LEFT_PAREN) {
 	  if (!_expression()) return false; // will add param ptr to mixed buffer
 	  else return true;
   }
-  else if (get_top() == ID) {
-    auto p = shared_ptr<parameter>(new parameter(ID,
-      TokenInfo_vector[current_position].value));
+  else */if (get_top() == ID) {
+    /*auto p = shared_ptr<parameter>(new parameter(ID,
+      TokenInfo_vector[current_position].value));*/
+    parameter p(ID, TokenInfo_vector[current_position].value);
     mixed_param_buffer.push_back(p);
 	  current_position++;
 	  return true;
   }
   else if (get_top() == STRING) {
-    auto p = shared_ptr<parameter>(new parameter(STRING,
-      TokenInfo_vector[current_position].value));
+    /*auto p = shared_ptr<parameter>(new parameter(STRING,
+      TokenInfo_vector[current_position].value));*/
+    parameter p(STRING, TokenInfo_vector[current_position].value);
     mixed_param_buffer.push_back(p);
 	  current_position++;
 	  return true;
@@ -316,7 +330,7 @@ bool Parser::_parameterList() {
   if (!_parameterList()) return false;
   else return true;
 }
-
+/*
 bool Parser::_expression() {
   if (get_top() == LEFT_PAREN) current_position++;
   else return false;
@@ -343,7 +357,7 @@ bool Parser::_expression2() {
   }
   else return false;
 }
-
+*/
 bool Parser::_operator() {
   if (get_top() == MULTIPLY) {
     token_buffer.push_back(MULTIPLY);
