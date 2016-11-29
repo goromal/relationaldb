@@ -337,7 +337,7 @@ string Relation::to_String_test() {
   return ss.str();
 }
 
-string Relation::get_Name() {
+string & Relation::get_Name() {
   return Name;
 }
 
@@ -345,7 +345,7 @@ const string & Relation::get_Name() const {
   return Name;
 }
 
-Tuple Relation::get_Header() {
+Tuple & Relation::get_Header() {
   return Header;
 }
 
@@ -353,7 +353,7 @@ const Tuple & Relation::get_Header() const {
   return Header;
 }
 
-my_set Relation::get_Rows() {
+my_set & Relation::get_Rows() {
   return Rows;
 }
 

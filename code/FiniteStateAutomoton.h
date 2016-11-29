@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <algorithm>
 #include <memory>
+#include <stack>
+#include <set>
 
 using std::string;
 using std::vector;
@@ -18,6 +20,7 @@ using std::stringstream;
 using std::sort;
 using std::shared_ptr;
 using std::map;
+using std::stack; using std::set;
 
 enum TokenType {COMMA,PERIOD,Q_MARK,LEFT_PAREN,RIGHT_PAREN,COLON,COLON_DASH,MULTIPLY,ADD,SCHEMES,FACTS,RULES,
 QUERIES,ID,STRING,COMMENT,WHITESPACE,UNDEFINED,MY_EOF,NEWLINE};

@@ -113,11 +113,11 @@ public:
   Relation Rename(const vector<parameter> & new_header); // For safe, simultaneous full-header changes
   string to_String();
   string to_String_test();
-  string get_Name();
+  string & get_Name();
   const string & get_Name() const;
-  Tuple get_Header();
+  Tuple & get_Header();
   const Tuple & get_Header() const;
-  my_set get_Rows();
+  my_set & get_Rows();
   const my_set & get_Rows() const;
   ~Relation();
 private:
