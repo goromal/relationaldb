@@ -5,5 +5,5 @@ if [[ -z "$TEST_NUM" ]]; then
 else
 	FILENAME=_test$TEST_NUM.txt
 fi
-g++ -g -Wall -std=c++11 code/*.cpp -o _lab4
-./_lab4 #tests/$FILENAME
+g++ -g -Wall -std=c++11 code/*.cpp -o _lab_code
+./_lab_code tests/$FILENAME

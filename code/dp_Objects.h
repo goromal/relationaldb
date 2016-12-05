@@ -46,6 +46,8 @@ struct rule {
   rule();
   rule(predicate _headPred);
   void add_Pred(predicate _p);
+  bool operator==(const rule & other) const; // Defining == as having same headPred name
+                                             // for the sake of datalogProgram graph construction
   string to_String();
   ~rule();
   predicate headPred;

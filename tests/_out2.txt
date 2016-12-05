@@ -1,4 +1,12 @@
-Schemes populated after 2 passes through the Rules.
+Dependency Graph
+R0:
+R1:R0
+
+Rule Evaluation
+1 passes: R0
+1 passes: R1
+
+Query Evaluation
 g('4',B)? Yes(1)
   B='5'
 r(E,'3')? Yes(1)

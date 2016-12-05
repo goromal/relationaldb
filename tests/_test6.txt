@@ -1,14 +1,22 @@
+#|
+	This file is for testing the ordering of my SCC
+	compilation algorithm (ugh, arbitrariness...)s
+|#
 Schemes:
-  SK(A,B,C,D)
+  A(X,Y)
+  B(X,Y)
+  C(X,Y)
+  D(X,Y)
+  E(X,Y)
+  F(X,Y)
+  G(X,Y)
 Facts:
-  SK('a','c','c','d').
-  SK('b','c','d','e').
-  SK('b','b','b','c').
-  SK('b','c','a','a').
+  D('b','a').
 Rules:
-  DoNothing(Z) :- Stuff(Z).
+  A(X,Y) :- B(X,Y), C(X,Y). # R0
+  B(X,Y) :- A(X,Y), D(X,Y). # R1
+  B(X,Y) :- B(Y,X).         # R2
+  E(X,Y) :- F(X,Y), G(X,Y). # R3
+  E(X,Y) :- E(X,Y), F(X,Y).  # R4
 Queries:
-  SK(A,'c',B,C)?
-  SK(A,X,X,A)?
-  SK(A,X,X,B)?
-  SK(A,B,B,'c')?
+  A('a','a')?

@@ -1,14 +1,4 @@
-When cycling through schemes, compile a map<pred_name, predicate_obj> for all predicate definitions
+POSSIBLE OPTIMIZATIONS:
 
-When cycling through facts, pair instance predicates with definition predicates using the definition map and ".. = .. + ..." operations to fill up a relations map. If a predicate is missing from the definition map, throw an error. 
+- "non-void" insert function and other similar paradigms
 
---------------------------------------------------------
-
-insert const stuff like in relation.h wherever appropriate and useful.
-
-------OPTIMIZATION---------
-- comment out ALL expression / shared_ptr things [X]
-- implement algorithm as project description says [X]
-- go through all methods in rule and query evaluation and make sure variables passed by reference [X..]
-	- and const [X..]
-- comment out assert statements [X]

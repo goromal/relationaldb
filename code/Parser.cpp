@@ -19,8 +19,6 @@ TokenType Parser::get_top() {
 void Parser::process_input() {
   processed_valid_language = _datalogProgram();
   if (processed_valid_language) {
-    //Program.compile_Domain();
-    Program.evaluate_Rules();
     Program.answer_Queries();
   }
 }

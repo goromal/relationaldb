@@ -1,4 +1,18 @@
-Schemes populated after 2 passes through the Rules.
+Dependency Graph
+R0:
+R1:
+R2:
+R3:R0,R1,R2
+R4:R3
+
+Rule Evaluation
+1 passes: R2
+1 passes: R1
+1 passes: R0
+1 passes: R3
+1 passes: R4
+
+Query Evaluation
 DeaUoo(A,B,C,D,E)? Yes(3)
   A='a', B='a', C='a', D='a', E='a'
   A='a', B='a', C='b', D='a', E='a'

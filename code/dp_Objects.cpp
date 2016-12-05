@@ -77,6 +77,10 @@ void rule::add_Pred(predicate _p) {
   predicates.push_back(_p);
 }
 
+bool rule::operator==(const rule & other) const {
+  return other.headPred.name == this->headPred.name;
+}
+
 string rule::to_String() {
   stringstream to_return;
   const char* separator = "";

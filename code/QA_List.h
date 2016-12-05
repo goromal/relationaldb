@@ -33,7 +33,7 @@ struct ParamPairPtr_equal {
 class QAList {
 public:
   QAList();
-  QAList(Relation R, vector<parameter> P);
+  QAList(Relation R, vector<parameter> P); // REMOVED AMPERSTANDS===============
   void push_back(ParamPair PP);
   parameter& operator()(unsigned int i, unsigned int j);
 	const parameter& operator()(unsigned int i, unsigned int j) const;
